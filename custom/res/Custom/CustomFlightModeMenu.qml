@@ -22,9 +22,14 @@ QGCLabel {
     property var    currentVehicle:         QGroundControl.multiVehicleManager.activeVehicle
     property real   mouseAreaLeftMargin:    0
     property string accessType: QGroundControl.corePlugin.accessType
-
     Menu {
         id: flightModesMenu
+        //MenuItem {
+            //enabled: true
+            //onTriggered: {
+               // flightModeMenuItemComponent.updateFlightModesMenu()
+           // }
+        //}
     }
 
     Component {
@@ -32,13 +37,22 @@ QGCLabel {
 
         MenuItem {
             enabled: true
-            onTriggered: currentVehicle.flightMode = text
+            onTriggered: {
+                //flightModeMenuItemComponent.updateFlightModesMenu()
+                currentVehicle.flightMode = text
+            }
         }
     }
 
     property var flightModesMenuItems: []
 
+
     function updateFlightModesMenu() {
+        //accessType = PasscodeManager.submitPasscode(passcodeField.text)
+        //accessType = CustomCorePlugin.getAccessType()
+        //accessType = AccessType.accessTypeString(AccessTypeConfig.getInitialUserAccessType())
+
+
         if (currentVehicle && currentVehicle.flightModeSetAvailable) {
             var i;
             for (i = 0; i < flightModesMenuItems.length; i++) {
@@ -52,8 +66,7 @@ QGCLabel {
                             currentVehicle.flightModes[i] === "Auto" || currentVehicle.flightModes[i] === "Loiter" ||
                             currentVehicle.flightModes[i] === "RTL" || currentVehicle.flightModes[i] === "Circle" ||
                             currentVehicle.flightModes[i] === "Land" || currentVehicle.flightModes[i] === "Position Hold" ||
-                            currentVehicle.flightModes[i] === "Brake" || currentVehicle.flightModes[i] === "Smart RTL" ||
-                            currentVehicle.flightModes[i] === "Acro") {
+                            currentVehicle.flightModes[i] === "Brake" || currentVehicle.flightModes[i] === "Smart RTL") {
                         flightModesMenuItems.push(menuItem)
                         flightModesMenu.insertItem(i, menuItem)
                     }
@@ -64,7 +77,8 @@ QGCLabel {
                             currentVehicle.flightModes[i] === "RTL" || currentVehicle.flightModes[i] === "Circle" ||
                             currentVehicle.flightModes[i] === "Land" || currentVehicle.flightModes[i] === "Position Hold" ||
                             currentVehicle.flightModes[i] === "Brake" || currentVehicle.flightModes[i] === "Smart RTL" ||
-                            currentVehicle.flightModes[i] === "Drift" || currentVehicle.flightModes[i] === "Guided") {
+                            currentVehicle.flightModes[i] === "Drift" || currentVehicle.flightModes[i] === "Guided"||
+                            currentVehicle.flightModes[i] === "Acro") {
                         flightModesMenuItems.push(menuItem)
                         flightModesMenu.insertItem(i, menuItem)
                     }
@@ -77,7 +91,9 @@ QGCLabel {
         }
     }
 
+
     Component.onCompleted: _root.updateFlightModesMenu()
+    //Menu.onCompleted: _root.updateFlightModesMenu()
 
     Connections {
         target:                 QGroundControl.multiVehicleManager
@@ -89,6 +105,12 @@ QGCLabel {
         visible:            currentVehicle && currentVehicle.flightModeSetAvailable
         anchors.leftMargin: mouseAreaLeftMargin
         anchors.fill:       parent
-        onClicked:          flightModesMenu.popup((_root.width - flightModesMenu.width) / 2, _root.height)
+        onClicked: {
+            //CustomCorePlugin.setAccessType("Expert")
+            _root.updateFlightModesMenu()
+            flightModesMenu.popup((_root.width - flightModesMenu.width) / 2, _root.height)
+            //accessType = CustomCorePlugin.getAccessType()
+
+        }
     }
 }

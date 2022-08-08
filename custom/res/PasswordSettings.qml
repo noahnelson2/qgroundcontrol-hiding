@@ -16,6 +16,8 @@ Rectangle {
     readonly property real _margins: ScreenTools.defaultFontPixelHeight
     property string currentAccessType: QGroundControl.corePlugin.accessType
 
+
+
     QGCPalette { 
         id: qgcPal
         colorGroupEnabled: true
@@ -64,15 +66,18 @@ Rectangle {
 
                 onClicked: {
                     accessType = PasscodeManager.submitPasscode(passcodeField.text)
-                    CustomCorePlugin.setAccessType(accessType)
+                    //CustomCorePlugin.setAccessType(accessType)
                     if (accessType == currentAccessType) {
                         passcodeField.text = ""
                     }
-                    else if (accessType == "Basic" || accessType == "Expert" || accessType == "Factory") {
+                    else if (accessType == "Basic" || accessType == "Expert" || accessType === "Factory") {
                         passcodeField.text = ""
+                        //CURRENT_USER_ACCESS_TYPE = accessType
+                        //accessType = changeE()
                         currentAccessType = accessType
                         loginMessage.color = qgcPal.statusPassedText
                         loginMessage.text = "Access type changed to " + accessType
+                        CustomFlightModeMenu._root.updateFlightModesMenu()
                     }  else {
                         loginMessage.color = qgcPal.statusFailedText
                         loginMessage.text = "Check the passcode entered and try again"

@@ -1,4 +1,7 @@
 #include "PasscodeManager.h"
+//#include "CustomCorePlugin.h"
+//#include "CustomCorePlugin.cc"
+#include "AccessTypeConfig.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -47,5 +50,22 @@ QString PasscodeManager::submitPasscode(QString passcode) {
         }
         i++;
     }
+
+    setInitialUserAccessType(passcode);
+
+    //setAccessType()
+    //string newAccessType = passcode.toStdString();
+
+    //if (newAccessType == accessTypeString(AccessType::Basic)) {
+      //  CURRENT_USER_ACCESS_TYPE = AccessType::Basic;
+    //} else if (newAccessType == accessTypeString(AccessType::Expert)) {
+    //    CURRENT_USER_ACCESS_TYPE = AccessType::Expert;
+  //  } else //(newAccessType == accessTypeString(AccessType::Factory)); {
+  //      CURRENT_USER_ACCESS_TYPE = AccessType::Factory;
+
     return passcode;
 }
+
+//void PasscodeManager::changeAccess(AccessType accessType){
+//    accessTypes = accessType;
+//}
